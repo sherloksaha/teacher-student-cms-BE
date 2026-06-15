@@ -2,36 +2,37 @@ import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
-import { PaymentStatusModule } from './modules/payment-status/payment-status.module';
-import { PaymentStatusService } from './modules/payment-status/payment-status.service';
-import { PaymentStatusController } from './modules/payment-status/payment-status.controller';
-import { SubscriptionsHistoryModule } from './modules/subscriptions-history/subscriptions-history.module';
-import { SubscriptionsModule } from './modules/subscriptions/subscriptions.module';
-import { UsersModule } from './modules/users/users.module';
-import { LocationsModule } from './modules/locations/locations.module';
-import { UsersService } from './modules/users/users.service';
-import { UsersController } from './modules/users/users.controller';
+import { PaymentStatusModule } from './core/modules/payment-status/payment-status.module';
+import { PaymentStatusService } from './core/modules/payment-status/payment-status.service';
+import { PaymentStatusController } from './core/modules/payment-status/payment-status.controller';
+import { SubscriptionsHistoryModule } from './core/modules/subscriptions-history/subscriptions-history.module';
+import { SubscriptionsModule } from './core/modules/subscriptions/subscriptions.module';
+import { UsersModule } from './core/modules/users/users.module';
+import { LocationsModule } from './core/modules/locations/locations.module';
+import { UsersService } from './core/modules/users/users.service';
+import { UsersController } from './core/modules/users/users.controller';
 import { ConfigModule } from '@nestjs/config';
-import { PostsModule } from './modules/posts/posts.module';
+import { PostsModule } from './core/modules/posts/posts.module';
 
 import appConfig from './config/app.config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { User } from './modules/users/entities/user.entity';
-import { Teacher } from './modules/users/entities/teacher.entity';
-import { Student } from './modules/users/entities/student.entity';
-import { StudentSubject } from './modules/users/entities/student-subject.entity';
-import { State } from './modules/locations/entities/state.entity';
-import { City } from './modules/locations/entities/city.entity';
-import { Area } from './modules/locations/entities/area.entity';
-import { Class } from './modules/classes/entities/class.entity';
-import { Subject } from './modules/subjects/entities/subject.entity';
-import { Subscription } from './modules/subscriptions/entities/subscription.entity';
-import { SubscriptionHistory } from './modules/subscriptions-history/entities/subscription-history.entity';
-import { PostEntity } from './modules/posts/entities/posts.entities';
-import { AuthModule } from './modules/auth/auth.module';
-import { ClassesModule } from './modules/classes/classes.module';
-import { SubjectsModule } from './modules/subjects/subjects.module';
-import { StudentSubjectsModule } from './modules/student-subjects/student-subjects.module';
+import { User } from './core/modules/users/entities/user.entity';
+import { Teacher } from './core/modules/users/entities/teacher.entity';
+import { Student } from './core/modules/users/entities/student.entity';
+import { StudentSubject } from './core/modules/users/entities/student-subject.entity';
+import { State } from './core/modules/locations/entities/state.entity';
+import { City } from './core/modules/locations/entities/city.entity';
+import { Area } from './core/modules/locations/entities/area.entity';
+import { Class } from './core/modules/classes/entities/class.entity';
+import { Subject } from './core/modules/subjects/entities/subject.entity';
+import { Subscription } from './core/modules/subscriptions/entities/subscription.entity';
+import { SubscriptionHistory } from './core/modules/subscriptions-history/entities/subscription-history.entity';
+import { PostEntity } from './core/modules/posts/entities/posts.entities';
+import { SubscriptionConfiguration } from './core/modules/subscriptions/entities/subscription-configuration.entity';
+import { AuthModule } from './core/modules/auth/auth.module';
+import { ClassesModule } from './core/modules/classes/classes.module';
+import { SubjectsModule } from './core/modules/subjects/subjects.module';
+import { StudentSubjectsModule } from './core/modules/student-subjects/student-subjects.module';
 
 @Module({
   imports: [
@@ -70,6 +71,8 @@ import { StudentSubjectsModule } from './modules/student-subjects/student-subjec
         Subscription,
         SubscriptionHistory,
         PostEntity,
+        SubscriptionConfiguration,
+        
       ],
       synchronize: true, // Automatically syncs database schema with code (Disable in production!)
     }),
@@ -86,9 +89,7 @@ import { StudentSubjectsModule } from './modules/student-subjects/student-subjec
   ],
   controllers: [
     AppController,
-    UsersController,
-    PaymentStatusController,
   ],
-  providers: [AppService, UsersService, PaymentStatusService],
+  providers: [AppService],
 })
-export class AppModule {}
+export class AppModule { }

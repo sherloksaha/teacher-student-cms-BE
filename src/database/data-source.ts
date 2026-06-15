@@ -1,16 +1,16 @@
 import { DataSource } from 'typeorm';
-import { User } from '../modules/users/entities/user.entity';
-import { Teacher } from '../modules/users/entities/teacher.entity';
-import { Student } from '../modules/users/entities/student.entity';
-import { StudentSubject } from '../modules/users/entities/student-subject.entity';
-import { State } from '../modules/locations/entities/state.entity';
-import { City } from '../modules/locations/entities/city.entity';
-import { Area } from '../modules/locations/entities/area.entity';
-import { Class } from '../modules/classes/entities/class.entity';
-import { Subject } from '../modules/subjects/entities/subject.entity';
-import { Subscription } from '../modules/subscriptions/entities/subscription.entity';
-import { SubscriptionHistory } from '../modules/subscriptions-history/entities/subscription-history.entity';
-import { PostEntity } from '../modules/posts/entities/posts.entities';
+import { User } from '../core/modules/users/entities/user.entity';
+import { Teacher } from '../core/modules/users/entities/teacher.entity';
+import { Student } from '../core/modules/users/entities/student.entity';
+import { StudentSubject } from '../core/modules/users/entities/student-subject.entity';
+import { State } from '../core/modules/locations/entities/state.entity';
+import { City } from '../core/modules/locations/entities/city.entity';
+import { Area } from '../core/modules/locations/entities/area.entity';
+import { Class } from '../core/modules/classes/entities/class.entity';
+import { Subject } from '../core/modules/subjects/entities/subject.entity';
+import { Subscription } from '../core/modules/subscriptions/entities/subscription.entity';
+import { SubscriptionHistory } from '../core/modules/subscriptions-history/entities/subscription-history.entity';
+import { PostEntity } from '../core/modules/posts/entities/posts.entities';
 import * as dotenv from 'dotenv';
 
 dotenv.config();

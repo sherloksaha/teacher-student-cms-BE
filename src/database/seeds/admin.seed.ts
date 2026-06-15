@@ -1,7 +1,7 @@
 import { DataSource } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { User } from 'src/modules/users/entities/user.entity';
-import { UserRole } from 'src/modules/auth/constant';
+import { User } from 'src/core/modules/users/entities/user.entity';
+import { UserRole } from 'src/core/modules/auth/constant';
 
 
 export async function seedAdmin(dataSource: DataSource) {
