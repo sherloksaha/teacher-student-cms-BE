@@ -16,6 +16,8 @@ import { UserRole } from './constant';
 import { DataSource } from 'typeorm/browser';
 import { Student } from 'src/core/modules/users/entities/student.entity';
 import { Teacher } from 'src/core/modules/users/entities/teacher.entity';
+import { UserEventsService } from '../events/user-events.service';
+
 // import { LoginDto } from './dto/login-dto';
 
 @Injectable()
@@ -28,6 +30,8 @@ export class AuthService {
 
     @InjectDataSource()
     private readonly dataSource: DataSource,
+
+    private readonly userEventsService: UserEventsService
   ) { }
 
   async register(userData: RegisterDto) {
@@ -68,6 +72,9 @@ export class AuthService {
       }
 
       const { password, ...result } = savedUser;
+
+      this.userEventsService.emitUserRegistered(savedUser);
+
       return {
         user: result,
         message: 'User registered successfully',

@@ -11,6 +11,7 @@ import { RoleGuard } from './guard/roles-gauards';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { Student } from 'src/core/modules/users/entities/student.entity';
 import { Teacher } from 'src/core/modules/users/entities/teacher.entity';
+import { EventsModule } from '../events/events.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { Teacher } from 'src/core/modules/users/entities/teacher.entity';
     // Import User entity for repository injection
     PassportModule,
     JwtModule.register({}),
+    EventsModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtService, JwtAuthGuard, RoleGuard, JwtStrategy],

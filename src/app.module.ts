@@ -33,6 +33,8 @@ import { AuthModule } from './core/modules/auth/auth.module';
 import { ClassesModule } from './core/modules/classes/classes.module';
 import { SubjectsModule } from './core/modules/subjects/subjects.module';
 import { StudentSubjectsModule } from './core/modules/student-subjects/student-subjects.module';
+import { ThrottlerModule } from '@nestjs/throttler';
+import { EventsModule } from './core/modules/events/events.module';
 
 @Module({
   imports: [
@@ -44,6 +46,9 @@ import { StudentSubjectsModule } from './core/modules/student-subjects/student-s
       // })
       load: [appConfig],
     }),
+    ThrottlerModule.forRoot([
+      { ttl: 60000, limit: 10 }
+    ]),
     //  TypeOrmModule.forRoot({
     //   type: 'postgres',
     //   // Pass your connection link directly here
@@ -86,6 +91,7 @@ import { StudentSubjectsModule } from './core/modules/student-subjects/student-s
     ClassesModule,
     SubjectsModule,
     StudentSubjectsModule,
+    EventsModule,
   ],
   controllers: [
     AppController,
