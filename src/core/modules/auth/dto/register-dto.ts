@@ -47,6 +47,10 @@ export class RegisterDto {
   schoolName?: string;
 
   @IsOptional()
-  @IsNotEmpty({ message: 'Experience is required' })
-  experience?: string;
+  @IsNotEmpty({ message: 'Highest Qualification is required' })
+  highestQualification?: string;
+
+  @IsOptional()
+  @IsNotEmpty({ message: 'Years of Experience is required' })
+  yearsOfExperience?: number;
 }

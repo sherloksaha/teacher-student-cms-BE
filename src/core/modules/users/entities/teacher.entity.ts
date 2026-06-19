@@ -4,6 +4,7 @@ import { Area } from '../../locations/entities/area.entity';
 import { Subject } from '../../subjects/entities/subject.entity';
 import { SubscriptionHistory } from '../../subscriptions-history/entities/subscription-history.entity';
 import { Class } from '../../classes/entities/class.entity';
+import { IsOptional } from 'class-validator';
 export enum govtId {
   Adhaar = 'adhaar',
   Pan = 'pan',
@@ -23,6 +24,16 @@ export class Teacher {
     default: govtId.Adhaar,
   })
   govtId: string
+
+
+  @Column({nullable:true})
+  @IsOptional()
+  highestQualification:string
+
+
+  @Column({nullable:true})
+  @IsOptional()
+  yearsOfExperience: number
 
   @OneToOne(() => User, (user) => user.teacher, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'userId' })

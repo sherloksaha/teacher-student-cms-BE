@@ -56,7 +56,7 @@ export class AuthService {
 
       if (savedUser.role === UserRole.STUDENT) {
         const student = manager.create(Student, {
-          user: {...savedUser, schoolName: userData?.schoolName},
+          user: { ...savedUser, schoolName: userData?.schoolName },
         });
 
         await manager.save(Student, student);
@@ -64,7 +64,7 @@ export class AuthService {
 
       if (savedUser.role === UserRole.TEACHER) {
         const teacher = manager.create(Teacher, {
-          user: {...savedUser, experience: userData?.experience},
+          user: { ...savedUser, highestQualification: userData?.highestQualification, yearsOfExperience: userData?.yearsOfExperience },
           uniqueId: crypto.randomUUID(),
         });
 
@@ -92,7 +92,7 @@ export class AuthService {
     if (!user) {
       throw new ConflictException('Invalid email or password');
     }
-    if(user.role!==userData.role){
+    if (user.role !== userData.role) {
       throw new UnauthorizedException('Invalid email or password');
     }
     if (!(await this.verifyPassword(userData?.password, user?.password))) {
