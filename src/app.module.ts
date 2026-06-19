@@ -3,14 +3,12 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
 import { PaymentStatusModule } from './core/modules/payment-status/payment-status.module';
-import { PaymentStatusService } from './core/modules/payment-status/payment-status.service';
-import { PaymentStatusController } from './core/modules/payment-status/payment-status.controller';
+
 import { SubscriptionsHistoryModule } from './core/modules/subscriptions-history/subscriptions-history.module';
 import { SubscriptionsModule } from './core/modules/subscriptions/subscriptions.module';
 import { UsersModule } from './core/modules/users/users.module';
 import { LocationsModule } from './core/modules/locations/locations.module';
-import { UsersService } from './core/modules/users/users.service';
-import { UsersController } from './core/modules/users/users.controller';
+
 import { ConfigModule } from '@nestjs/config';
 import { PostsModule } from './core/modules/posts/posts.module';
 
@@ -35,6 +33,9 @@ import { SubjectsModule } from './core/modules/subjects/subjects.module';
 import { StudentSubjectsModule } from './core/modules/student-subjects/student-subjects.module';
 import { ThrottlerModule } from '@nestjs/throttler';
 import { EventsModule } from './core/modules/events/events.module';
+import { QueueModule } from './core/modules/queue/queue.module';
+import { EmailModule } from './core/modules/email/email.module';
+import { SeedModule } from './core/modules/auth/seed/seed.module';
 
 @Module({
   imports: [
@@ -77,7 +78,7 @@ import { EventsModule } from './core/modules/events/events.module';
         SubscriptionHistory,
         PostEntity,
         SubscriptionConfiguration,
-        
+
       ],
       synchronize: true, // Automatically syncs database schema with code (Disable in production!)
     }),
@@ -92,10 +93,15 @@ import { EventsModule } from './core/modules/events/events.module';
     SubjectsModule,
     StudentSubjectsModule,
     EventsModule,
+    QueueModule,
+    EmailModule,
+    SeedModule,
   ],
   controllers: [
     AppController,
   ],
-  providers: [AppService],
+  providers: [
+    AppService,
+  ],
 })
 export class AppModule { }

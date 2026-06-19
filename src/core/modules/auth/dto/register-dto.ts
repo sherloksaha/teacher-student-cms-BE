@@ -6,6 +6,7 @@ import {
   MaxLength,
   Matches,
   Length,
+  IsOptional,
 } from 'class-validator';
 import { UserRole } from '../../users/entities/user.entity';
 
@@ -40,4 +41,12 @@ export class RegisterDto {
     message: 'Role must be STUDENT, TEACHER, or SUPER_ADMIN',
   })
   role: UserRole;
+
+  @IsOptional()
+  @IsNotEmpty({ message: 'School name is required' })
+  schoolName?: string;
+
+  @IsOptional()
+  @IsNotEmpty({ message: 'Experience is required' })
+  experience?: string;
 }

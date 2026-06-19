@@ -17,6 +17,7 @@ import { UpdateStateDto } from './dto/update-state.dto';
 import { Area } from './entities/area.entity';
 import { City } from './entities/city.entity';
 import { State } from './entities/state.entity';
+import { FindOptionsWhere } from 'typeorm/browser';
 
 
 @Injectable()
@@ -193,7 +194,17 @@ export class LocationsService {
     });
   }
 
-  async findAllAreas(): Promise<ApiResponse<Area[]>> {
+  async findAllAreas(
+    query?: {
+      search?: string;
+      cityId?: number;
+    },
+  ): Promise<ApiResponse<Area[]>> {
+    const where: FindOptionsWhere<Area> = {};
+    if (query?.cityId) {
+      where.city = { id: query.cityId };
+    }
+
     const areas = await this.areaRepository.find({
       relations: {
         city: {

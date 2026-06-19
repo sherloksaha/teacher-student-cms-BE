@@ -17,11 +17,11 @@ export class LoggingInterceptor implements NestInterceptor {
         const userAgent = request.get('user-agent') || 'unknown';
         const ip = request.ip;
         const userId = request.user?.id || 'guest';
-
+        console.log("oduuuuuu", body)
         this.logger.log(`Request: ${method} ${url} - User: ${userId} - IP: ${ip} - User-Agent: ${userAgent}`)
 
         const startTime = Date.now();
-
+        // return next.handle();
         return next.handle().pipe(
             tap({
                 next: (data) => {
