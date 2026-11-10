@@ -19,6 +19,7 @@ export class UserEventsService {
 
     constructor(
         private readonly eventEmitter: EventEmitter2
+        
     ) { }
 
 

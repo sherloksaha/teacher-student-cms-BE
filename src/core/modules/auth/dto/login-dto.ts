@@ -10,6 +10,9 @@ export class LoginDto {
   @IsEmail({}, { message: 'Invalid email address' })
   email: string;
 
+  @IsNotEmpty({ message: 'Role is required' })
+  role: string;
+
   @IsNotEmpty({ message: 'Password is required' })
   @MinLength(6, { message: 'Password must be at least 6 characters long' })
   @MaxLength(12, { message: 'Password must not exceed 12 characters' })

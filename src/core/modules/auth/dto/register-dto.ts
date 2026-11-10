@@ -6,6 +6,8 @@ import {
   MaxLength,
   Matches,
   Length,
+  IsOptional,
+  IsInt,
 } from 'class-validator';
 import { UserRole } from '../../users/entities/user.entity';
 
@@ -40,4 +42,28 @@ export class RegisterDto {
     message: 'Role must be STUDENT, TEACHER, or SUPER_ADMIN',
   })
   role: UserRole;
+
+  @IsOptional()
+  @IsNotEmpty({ message: 'School name is required' })
+  schoolName?: string;
+
+  @IsOptional()
+  @IsNotEmpty({ message: 'Highest Qualification is required' })
+  highestQualification?: string;
+
+  @IsOptional()
+  @IsNotEmpty({ message: 'Years of Experience is required' })
+  experienceYears?: number;
+
+  @IsOptional()
+  @IsNotEmpty({ message: 'City ID is required' })
+  cityId?: number;
+
+  @IsOptional()
+  @IsNotEmpty({ message: 'Area ID is required' })
+  areaId?: number;
+
+  @IsOptional()
+  @IsInt({ message: 'Class ID must be a number' })
+  classId?: number;
 }

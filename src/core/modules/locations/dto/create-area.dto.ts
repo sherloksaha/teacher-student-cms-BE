@@ -11,7 +11,7 @@ export class CreateAreaDto {
   @Min(1, { message: 'City id must be greater than 0' })
   cityId: number;
 
-  @IsNotEmpty({ message: 'zip id is required' })
-  @IsInt({ message: 'zip id must be an integer' })
-  zip: number
+  // @IsNotEmpty({ message: 'zip id is required' })
+  // @IsInt({ message: 'zip id must be an integer' })
+  // zip?: number
 }

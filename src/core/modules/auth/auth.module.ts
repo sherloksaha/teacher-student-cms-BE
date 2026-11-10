@@ -12,15 +12,20 @@ import { JwtStrategy } from './strategy/jwt.strategy';
 import { Student } from 'src/core/modules/users/entities/student.entity';
 import { Teacher } from 'src/core/modules/users/entities/teacher.entity';
 import { EventsModule } from '../events/events.module';
+import { LocationsModule } from '../locations/locations.module';
+import { Area } from '../locations/entities/area.entity';
+import { City } from '../locations/entities/city.entity';
+import { State } from '../locations/entities/state.entity';
 
 @Module({
   imports: [
     UsersModule,
-    TypeOrmModule.forFeature([User, Student, Teacher]),
+    TypeOrmModule.forFeature([User, Student, Teacher, Area, City, State]),
     // Import User entity for repository injection
     PassportModule,
     JwtModule.register({}),
     EventsModule,
+    LocationsModule,
   ],
   controllers: [AuthController],
   providers: [AuthService, JwtService, JwtAuthGuard, RoleGuard, JwtStrategy],

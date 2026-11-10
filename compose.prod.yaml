@@ -1,0 +1,7 @@
+services:
+  app:
+    image: su666sa/teacher-student-be:1.0.0
+    build:
+      target: runtime
+    environment:
+      NODE_ENV: production

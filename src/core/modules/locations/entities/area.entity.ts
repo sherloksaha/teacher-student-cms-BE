@@ -20,8 +20,8 @@ export class Area {
   @Column()
   name: string;
 
-  @Column()
-  zip: number
+  // @Column()
+  // zip: number
 
   @ManyToOne(() => City, (city) => city.areas, { onDelete: 'CASCADE' })
   city: City;

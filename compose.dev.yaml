@@ -1,0 +1,18 @@
+services:
+  app:
+    image: su666sa/teacher-student-be:dev
+    build:
+      target: build
+    command: npm run start:dev
+    environment:
+      NODE_ENV: development
+    volumes:
+      - type: bind
+        source: .
+        target: /app
+      - type: volume
+        source: node_modules
+        target: /app/node_modules
+
+volumes:
+  node_modules:
