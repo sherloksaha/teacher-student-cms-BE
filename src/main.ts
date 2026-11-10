@@ -7,10 +7,12 @@ import { HttpExceptionFilter } from './core/filters/http-exception-filter';
 
 
 async function bootstrap() {
-  const logger = new Logger('Bootstrap')
+  const logger = new Logger('Bootstrap');
+
   const app = await NestFactory.create(AppModule, {
-    logger: ['error', 'warn', 'log', 'verbose']
+    logger: ['error', 'warn', 'log', 'verbose'],
   });
+
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
@@ -18,17 +20,24 @@ async function bootstrap() {
       transform: true,
     }),
   );
-  async function bootstrap() {
-    const app = await NestFactory.create(AppModule);
-  }
-  bootstrap();
+
   app.enableCors({
-    origin: 'http://localhost:3002',
+    origin: [
+      'http://localhost:3000',
+      'http://localhost:3001',
+      'http://localhost:3002',
+      'http://localhost:3003',
+      'http://localhost:3004',
+      'http://localhost:5173',
+      'http://localhost:9000',
+    ],
     credentials: true,
   });
-  app.useGlobalInterceptors(new LoggingInterceptor())
+
+  app.useGlobalInterceptors(new LoggingInterceptor());
   app.useGlobalFilters(new HttpExceptionFilter());
 
-  await app.listen(process.env.PORT ?? 3000);
+  await app.listen(process.env.PORT ?? 9000);
 }
+
 bootstrap();

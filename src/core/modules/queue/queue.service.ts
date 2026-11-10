@@ -1,5 +1,5 @@
 // src/modules/queue/queue.service.ts
-import { Injectable, Logger, Module } from '@nestjs/common';
+import {  Logger, Module } from '@nestjs/common';
 import { InjectQueue } from '@nestjs/bullmq';
 import { Queue } from 'bullmq';
 import { EMAIL_JOBS, EMAIL_QUEUE } from './constants/queue.constant';
@@ -7,7 +7,6 @@ import { EMAIL_JOBS, EMAIL_QUEUE } from './constants/queue.constant';
 @Module({})
 export class QueueService {
     private readonly logger = new Logger(QueueService.name);
-
     constructor(
         @InjectQueue(EMAIL_QUEUE) private readonly emailQueue: Queue,
     ) { }

@@ -5,18 +5,19 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { InjectDataSource, InjectRepository } from '@nestjs/typeorm';
-import { User } from 'src/core/modules/users/entities/user.entity';
-import { Repository } from 'typeorm';
+import { User, UserRole } from 'src/core/modules/users/entities/user.entity';
+import { DataSource, Repository } from 'typeorm';
 import { RegisterDto } from './dto/register-dto';
 import * as bcrypt from 'bcrypt';
 import { LoginDto } from './dto/login-dto';
 import { JwtService } from '@nestjs/jwt';
 import { UpdateUserDto } from 'src/core/modules/users/dto/update-user-dto';
-import { UserRole } from './constant';
-import { DataSource } from 'typeorm/browser';
 import { Student } from 'src/core/modules/users/entities/student.entity';
 import { Teacher } from 'src/core/modules/users/entities/teacher.entity';
 import { UserEventsService } from '../events/user-events.service';
+import { Area } from '../locations/entities/area.entity';
+import { City } from '../locations/entities/city.entity';
+import { State } from '../locations/entities/state.entity';
 
 // import { LoginDto } from './dto/login-dto';
 
@@ -26,6 +27,9 @@ export class AuthService {
     @InjectRepository(User) private userRepository: Repository<User>,
     @InjectRepository(Student) private studentRepository: Repository<Student>,
     @InjectRepository(Teacher) private teacherRepository: Repository<Teacher>,
+    @InjectRepository(Area) private areaRepository: Repository<Area>,
+    @InjectRepository(City) private cityRepository: Repository<City>,
+    @InjectRepository(State) private stateRepository: Repository<State>,
     private jwtService: JwtService,
 
     @InjectDataSource()
@@ -44,6 +48,8 @@ export class AuthService {
       }
       const hashedPassword = await this.hashPassword(userData.password);
       userData.password = hashedPassword;
+      // console.log('userData', userData);
+      // return;
       const newUser = manager.create(User, {
         email: userData.email,
         password: userData.password,
@@ -51,12 +57,20 @@ export class AuthService {
         lastName: userData.lastName,
         phone: userData.phone,
         role: userData.role, // Default to STUDENT if role is not provided
+        isActive: true,
       });
+
+
       const savedUser = await manager.save(User, newUser);
+
+      console.log('savedUser', savedUser);
 
       if (savedUser.role === UserRole.STUDENT) {
         const student = manager.create(Student, {
-          user: { ...savedUser, schoolName: userData?.schoolName },
+          user: savedUser,
+          // schoolName: userData?.schoolName,
+          area: userData?.areaId ? { id: userData.areaId } : undefined,
+          class: userData?.classId ? { id: userData.classId } : undefined,
         });
 
         await manager.save(Student, student);
@@ -64,8 +78,11 @@ export class AuthService {
 
       if (savedUser.role === UserRole.TEACHER) {
         const teacher = manager.create(Teacher, {
-          user: { ...savedUser, highestQualification: userData?.highestQualification, yearsOfExperience: userData?.yearsOfExperience },
+          user: { ...savedUser },
           uniqueId: crypto.randomUUID(),
+          highestQualification: userData?.highestQualification,
+          experienceYears: userData?.experienceYears,
+          areas: userData?.areaId ? [{ id: userData.areaId }] : [],
         });
 
         await manager.save(Teacher, teacher);

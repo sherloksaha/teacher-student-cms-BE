@@ -31,7 +31,6 @@ export class ClassesController {
     @Query('search') search?: string,
   ): Promise<ApiResponse<Class[]>> {
     const response = await this.classesService.findAll();
-
     if (search) {
       return {
         ...response,

@@ -14,7 +14,7 @@ export class EmailService {
 
       this.logger.log(`🎉 Successfully sent welcome email to ${email}`);
     } catch (error) {
-      this.logger.error(`❌ Failed to send welcome email to ${email}`, error.stack);
+      this.logger.error(`❌ Failed to send welcome email to ${email}`);
       throw error; // Throwing the error tells BullMQ to retry the job automatically
     }
   }

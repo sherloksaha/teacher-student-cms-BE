@@ -2,22 +2,13 @@
 import { Module } from '@nestjs/common';
 import { BullModule } from '@nestjs/bullmq';
 import { QueueService } from './queue.service';
-import dotenv from 'dotenv'
 import { EMAIL_QUEUE } from './constants/queue.constant';
 import { EmailProcessor } from './processor/email.processor';
 import { EmailModule } from '../email/email.module';
-dotenv.config()
 
 
 @Module({
     imports: [
-        // Global configuration for Redis connection
-        BullModule.forRoot({
-            connection: {
-                host: process.env.REDIS_HOST || 'localhost',
-                port: parseInt(process.env.REDIS_PORT!, 10)
-            },
-        }),
         // Register the specific email queue
         BullModule.registerQueue({
             name: EMAIL_QUEUE,

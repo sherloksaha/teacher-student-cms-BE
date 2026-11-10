@@ -166,8 +166,8 @@ export class LocationsController {
     return this.locationsService.findOneArea(id);
   }
 
-  @UseGuards(JwtAuthGuard, RoleGuard)
-  @Roles(UserRole.SUPER_ADMIN)
+  // @UseGuards(JwtAuthGuard, RoleGuard)
+  // @Roles(UserRole.SUPER_ADMIN)
   @Post('areas')
   createArea(@Body() createAreaDto: CreateAreaDto): Promise<ApiResponse<Area>> {
     return this.locationsService.createArea(createAreaDto);

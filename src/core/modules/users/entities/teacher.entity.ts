@@ -33,7 +33,7 @@ export class Teacher {
 
   @Column({nullable:true})
   @IsOptional()
-  yearsOfExperience: number
+  experienceYears: number
 
   @OneToOne(() => User, (user) => user.teacher, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'userId' })

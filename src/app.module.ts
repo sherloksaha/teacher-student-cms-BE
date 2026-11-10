@@ -1,4 +1,6 @@
 import { Module } from '@nestjs/common';
+import { BullModule } from '@nestjs/bullmq';
+import { ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 
@@ -46,6 +48,16 @@ import { SeedModule } from './core/modules/auth/seed/seed.module';
       //   APP_NAME: joi.string().default('My_App')
       // })
       load: [appConfig],
+    }),
+    BullModule.forRootAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => ({
+        connection: {
+          host: configService.get<string>('REDIS_HOST') ?? 'localhost',
+          port: Number(configService.get<string>('REDIS_PORT') ?? 6379),
+        },
+      }),
+      inject: [ConfigService],
     }),
     ThrottlerModule.forRoot([
       { ttl: 60000, limit: 10 }

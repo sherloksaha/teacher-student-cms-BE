@@ -7,6 +7,7 @@ import {
   Matches,
   Length,
   IsOptional,
+  IsInt,
 } from 'class-validator';
 import { UserRole } from '../../users/entities/user.entity';
 
@@ -52,5 +53,17 @@ export class RegisterDto {
 
   @IsOptional()
   @IsNotEmpty({ message: 'Years of Experience is required' })
-  yearsOfExperience?: number;
+  experienceYears?: number;
+
+  @IsOptional()
+  @IsNotEmpty({ message: 'City ID is required' })
+  cityId?: number;
+
+  @IsOptional()
+  @IsNotEmpty({ message: 'Area ID is required' })
+  areaId?: number;
+
+  @IsOptional()
+  @IsInt({ message: 'Class ID must be a number' })
+  classId?: number;
 }
