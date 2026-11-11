@@ -1,8 +1,8 @@
 import { DataSource } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { AppDataSource } from '../data-source';
 import { User } from 'src/core/modules/users/entities/user.entity';
 import { UserRole } from 'src/core/modules/auth/constant';
-
 
 export async function seedAdmin(dataSource: DataSource) {
   const userRepository = dataSource.getRepository(User);
@@ -25,4 +25,15 @@ export async function seedAdmin(dataSource: DataSource) {
   });
 
   console.log('Admin created');
+}
+
+if (require.main === module) {
+  (async () => {
+    await AppDataSource.initialize();
+    await seedAdmin(AppDataSource);
+    await AppDataSource.destroy();
+  })().catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
 }

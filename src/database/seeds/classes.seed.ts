@@ -1,4 +1,5 @@
 import { DataSource } from 'typeorm';
+import { AppDataSource } from '../data-source';
 import { Class } from 'src/core/modules/classes/entities/class.entity';
 
 const classNames = [
@@ -18,7 +19,9 @@ const classNames = [
 export async function seedClasses(dataSource: DataSource) {
   const classRepository = dataSource.getRepository(Class);
 
-  const uniqueClassNames = [...new Set(classNames.map((name) => name.trim()).filter(Boolean))];
+  const uniqueClassNames = [
+    ...new Set(classNames.map((name) => name.trim()).filter(Boolean)),
+  ];
 
   if (!uniqueClassNames.length) return;
 
@@ -30,5 +33,16 @@ export async function seedClasses(dataSource: DataSource) {
   });
 
   console.log('Classes seeded');
+}
+
+if (require.main === module) {
+  (async () => {
+    await AppDataSource.initialize();
+    await seedClasses(AppDataSource);
+    await AppDataSource.destroy();
+  })().catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
 }
 

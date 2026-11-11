@@ -9,6 +9,7 @@ import { Area } from '../core/modules/locations/entities/area.entity';
 import { Class } from '../core/modules/classes/entities/class.entity';
 import { Subject } from '../core/modules/subjects/entities/subject.entity';
 import { Subscription } from '../core/modules/subscriptions/entities/subscription.entity';
+import { SubscriptionConfiguration } from '../core/modules/subscriptions/entities/subscription-configuration.entity';
 import { SubscriptionHistory } from '../core/modules/subscriptions-history/entities/subscription-history.entity';
 import { PostEntity } from '../core/modules/posts/entities/posts.entities';
 import * as dotenv from 'dotenv';
@@ -33,6 +34,7 @@ export const AppDataSource = new DataSource({
     Class,
     Subject,
     Subscription,
+    SubscriptionConfiguration,
     SubscriptionHistory,
     PostEntity,
   ],
