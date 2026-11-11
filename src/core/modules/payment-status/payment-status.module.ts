@@ -1,4 +1,8 @@
 import { Module } from '@nestjs/common';
+import { RazorpayService } from './razorpay.service';
 
-@Module({})
+@Module({
+	providers: [RazorpayService],
+	exports: [RazorpayService],
+})
 export class PaymentStatusModule {}

@@ -1,0 +1,144 @@
+PROJECT ENTITY AND API AUDIT
+============================
+
+Scope
+-----
+Static, read-only review of the NestJS source. The application was not run and endpoints were not integration-tested. "Implemented" means a route/service implementation exists in source, not that it has been verified against a running server.
+
+API base
+--------
+There is no global route prefix. The default port is 9000 unless PORT is configured. Global validation is enabled. See src/main.ts.
+
+ENTITY / MODEL STATUS
+---------------------
+
+User, Student, Teacher
+- Entity schemas and role relationships exist. Registration creates the applicable student or teacher profile.
+- No dedicated student/teacher profile CRUD APIs were found.
+
+State, City, Area
+- Entities, relationships, and CRUD service operations are implemented.
+- Known issue: cityId on GET /locations/areas is accepted but does not constrain the results.
+
+Class
+- Entity and CRUD service operations are implemented.
+
+Subject
+- Entity and CRUD service operations are implemented.
+- classId is attached as a relation reference; service validation that the class exists is not apparent.
+
+StudentSubject
+- Relationship entity and create/read/delete operations exist.
+- Updating the composite key is a placeholder and may fail or behave unexpectedly.
+
+PostEntity
+- Basic post schema and list/read/create/update operations exist.
+- No delete API was found.
+
+Subscription
+- Entity exists with configuration/history relations.
+- No API to create/manage subscriptions was found.
+
+SubscriptionConfiguration
+- Entity and create/update APIs exist.
+- Creating a configuration requires an existing Subscription. There is no configuration read/delete endpoint.
+
+SubscriptionHistory
+- Entity exists, but controller and service are empty. No usable API was found.
+
+Payment status
+- No payment-status entity/model or callable API was found; module is empty.
+
+REGISTERED APIs BY MODEL
+-----------------------
+
+Authentication and users
+- POST /auth/register — public; registers user and applicable student/teacher profile.
+- POST /auth/login — public; email, role, password; returns tokens.
+- PUT /auth/:id — public; updates selected user fields.
+- GET /auth/current-user — bearer JWT; student, teacher, or admin.
+- POST /auth/create-admin-user — bearer JWT; admin only.
+- GET /users — bearer JWT; admin only.
+- GET /users/role/:role — bearer JWT; admin only.
+
+Security concerns:
+- Public registration accepts the admin role.
+- Public PUT /auth/:id can update a user by ID, including password/status.
+- Update DTO has a status type/validation mismatch.
+
+Locations
+- GET /locations/states?search= — public.
+- GET /locations/states/:id — public.
+- POST /locations/states — public; body { name }.
+- PUT /locations/states/:id — admin; optional { name }.
+- DELETE /locations/states/:id — admin.
+- GET /locations/cities?search= — public.
+- GET /locations/cities/:id — public.
+- POST /locations/cities — public; body { name, stateId }.
+- PUT /locations/cities/:id — admin; optional { name, stateId }.
+- DELETE /locations/cities/:id — admin.
+- GET /locations/areas?search=&cityId= — public; cityId filtering currently does not work as expected.
+- GET /locations/areas/:id — public.
+- POST /locations/areas — public; body { name, cityId }.
+- PUT /locations/areas/:id — admin; optional { name, cityId }.
+- DELETE /locations/areas/:id — admin.
+
+Classes
+- GET /classes?search= — admin.
+- GET /classes/:id — public.
+- POST /classes/create — admin; body { name }.
+- PUT /classes/:id — admin; optional { name }.
+- DELETE /classes/:id — admin.
+- POST /classes/seed — admin.
+- Seed handler may swallow errors and report success despite a failed seed.
+
+Subjects
+- GET /subjects — public.
+- GET /subjects/:id — public.
+- POST /subjects — authenticated student, teacher, or admin; body { name, subjectCode, classId? }.
+- PUT /subjects/:id — authenticated student, teacher, or admin; partial subject fields.
+- DELETE /subjects/:id — authenticated student, teacher, or admin.
+
+Student-subject links
+- POST /student-subjects — admin; body { studentId, subjectId }.
+- GET /student-subjects — public.
+- GET /student-subjects/:studentId/:subjectId — admin.
+- PUT /student-subjects/:studentId/:subjectId — admin; update implementation is a placeholder.
+- DELETE /student-subjects/:studentId/:subjectId — admin.
+
+Subscription configuration
+- POST /subscriptions/configuration — admin; requires subscriptionId, maxTeachers, maxSubjects; freeConsultation optional. Requires an existing subscription.
+- PUT /subscriptions/configuration/:id — admin; partial maxTeachers, maxSubjects, freeConsultation.
+- No subscription CRUD API or configuration read/delete API found.
+
+Posts
+- GET /posts?search= — public.
+- GET /posts/:id — public.
+- POST /posts — public; body { title, content, authorName }.
+- PUT /posts/:id — public; optional post fields.
+- No DELETE /posts/:id route found.
+
+Other
+- GET / — starter hello response.
+- Subscription-history and payment-status endpoints are not implemented.
+- Hello controller has no handlers, and its module is not imported by the app.
+
+ADDITIONAL READINESS NOTES
+--------------------------
+- Several write APIs are public, including user updates, location creates, subject changes, and post changes. Review guards before production use.
+- Subscription configuration depends on subscription records that this app does not expose an API to create.
+- Runtime TypeORM configuration includes SubscriptionConfiguration, but the separate CLI data source omits it; runtime and CLI schema behavior may differ.
+- Runtime TypeORM synchronize is enabled in the app configuration; this is explicitly cautioned against for production.
+
+Key source locations
+--------------------
+- src/main.ts — bootstrap, port, validation
+- src/app.module.ts — app module/entity registration and TypeORM configuration
+- src/core/modules/auth/auth.controller.ts — authentication routes
+- src/core/modules/users/users.controller.ts — user routes
+- src/core/modules/locations/locations.controller.ts — location routes
+- src/core/modules/classes/classes.controller.ts — class routes
+- src/core/modules/subjects/subjects.controller.ts — subject routes
+- src/core/modules/student-subjects/student-subjects.controller.ts — student-subject routes
+- src/core/modules/subscriptions/subscriptions.controller.ts — subscription configuration routes
+- src/core/modules/posts/posts.controller.ts — post routes

@@ -31,6 +31,12 @@
 $ npm install
 ```
 
+## Razorpay configuration
+
+The payment module uses the official Razorpay Node.js SDK. Copy `.env.example` to `.env`, then set `RAZORPAY_KEY_ID` and `RAZORPAY_KEY_SECRET` using test credentials from the Razorpay Dashboard. Keep the secret out of source control and use live credentials only in the production secret store.
+
+`RazorpayService` is exported by `PaymentStatusModule` and provides order creation and checkout-signature verification. Order amounts passed to the service must be integers in the smallest currency unit (for INR, paise). Payment API routes and database persistence are not yet implemented.
+
 ## Compile and run the project
 
 ```bash
